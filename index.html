@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-build="v12">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ligentia Executive Market Summary (November 1, 2026)</title>
@@ -978,8 +978,8 @@ template,.print-all{display:none}
 }
 
 /* colour editor (only with #edit in the link) */
-.btn-colours{display:none;margin-right:8px;background:transparent!important;color:#FFFFFF!important;border:1px solid rgba(255,255,255,.4)!important}
-body.can-edit .btn-colours{display:inline-block}
+.btn-colours{display:inline-block;margin-right:8px;background:transparent!important;color:#FFFFFF!important;border:1px solid rgba(255,255,255,.4)!important}
+
 .theme-drawer{position:fixed;top:0;right:0;bottom:0;width:340px;max-width:92vw;z-index:3300;background:var(--surface);border-left:1px solid var(--line);box-shadow:-20px 0 50px rgba(4,51,71,.18);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease}
 .theme-drawer.open{transform:none}
 .td-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
@@ -1003,6 +1003,8 @@ body.editing [data-ek]{cursor:crosshair}
 body.editing .edit-banner{display:block}
 @media screen and (prefers-color-scheme: dark){.edit-hl{outline-color:#9CD2EE!important}}
 body.editing .tile-action{display:none}
+
+.sec-head h2,.panel h3,.tile h3,.sp-head h2,.mp-in h3,.mp-empty h3{color:var(--heading,var(--ink))}
 </style>
 </head>
 <body>
@@ -1082,7 +1084,7 @@ body.editing .tile-action{display:none}
     </div>
     <div class="region-list" role="group" aria-label="Regions"><button type="button" class="reg-btn a-tight" data-rid="na"><span>North America</span><span class="pill s-tight">Tight</span></button><button type="button" class="reg-btn a-risk" data-rid="uk"><span>UK</span><span class="pill s-risk">Disrupted</span></button><button type="button" class="reg-btn a-mixed" data-rid="europe"><span>Continental Europe</span><span class="pill s-mixed">Mixed</span></button><button type="button" class="reg-btn a-tight" data-rid="asia"><span>Asia Origin</span><span class="pill s-tight">Watch</span></button><button type="button" class="reg-btn a-tight" data-rid="isc"><span>Indian Subcontinent</span><span class="pill s-tight">Tight</span></button><button type="button" class="reg-btn a-risk" data-rid="me"><span>Middle East &amp; Gulf</span><span class="pill s-risk">Severe</span></button><button type="button" class="reg-btn a-tight" data-rid="oceania"><span>Oceania</span><span class="pill s-tight">Tight</span></button></div>
   </section>
-  <footer class="foot"><p>Questions? Contact your Ligentia account manager.</p>
+  <footer class="foot"><p>Questions? Contact your Ligentia account manager.</p><p class="fine build-tag">Build v12 (colour editor)</p>
   <p class="fine">Ligentia, member of ASYAD Group. Market data from the independent sources listed in each update and from Ligentia regional teams. Status ratings and pressure scores are editorial assessments based on that data. Percentages and qualitative ratings only. Map boundaries: Natural Earth, simplified and indicative only.</p></footer>
 </main>
 <dialog id="spot" aria-modal="true">
@@ -1263,9 +1265,12 @@ body.editing .tile-action{display:none}
 })();
 /* Colour editor: open the page with #edit at the end of the link */
 (function(){
-  var DEF={navy:'#043347',blue:'#3E9BCB',air:'#8ACFF0',ocean:'#3E9BCB',road:'#5FB8C6',rail:'#7E98DA',risk:'#EE8F8F',tight:'#F5A66B',mixed:'#F5CF85',open:'#8ED3AE',land:'#D3E2EB',sea:'#F2F7FA'};
-  var GROUPS=[['Brand',[['navy','Header, buttons and tray'],['blue','Accent blue (regions, action boxes)']]],
-    ['Products',[['air','Air'],['ocean','Ocean'],['road','Road'],['rail','Rail']]],
+  var DEF={navy:'#043347',blue:'#3E9BCB',heading:'#0E2A38',air:'#8ACFF0',airText:'#1D79A8',ocean:'#3E9BCB',oceanText:'#135E86',road:'#5FB8C6',roadText:'#1A6F7B',rail:'#7E98DA',railText:'#3A55A0',risk:'#EE8F8F',tight:'#F5A66B',mixed:'#F5CF85',open:'#8ED3AE',land:'#D3E2EB',sea:'#F2F7FA'};
+  var GROUPS=[['Brand',[['navy','Header, buttons and tray'],['blue','Accent blue (regions, action boxes)'],['heading','Section and card headings']]],
+    ['Air',[['air','Air: top lines, chips, charts'],['airText','Air: header and status text']]],
+    ['Ocean',[['ocean','Ocean: top lines, chips, charts'],['oceanText','Ocean: header and status text']]],
+    ['Road',[['road','Road: top lines, chips, charts'],['roadText','Road: header and status text']]],
+    ['Rail',[['rail','Rail: top lines, chips, charts'],['railText','Rail: header and status text']]],
     ['Status tags and risk',[['risk','High risk / severe'],['tight','Tight'],['mixed','Mixed / watch'],['open','Open / balanced']]],
     ['Map',[['land','Land'],['sea','Sea']]]];
   var LABEL={}; GROUPS.forEach(function(g){g[1].forEach(function(t){LABEL[t[0]]=t[1];});});
@@ -1280,9 +1285,11 @@ body.editing .tile-action{display:none}
     dbg:hsl(h,s*.45,17),dbd:hsl(h,s*.4,32),dfg:hsl(h,s,80),
     dland:hsl(h,s*.35,24),dsea:hsl(h,s*.35,9)};}
   function css(){
-    var L=[],D=[],k,t;
+    var L=[],D=[],LT=[],k,t;
     for(k in cur){ if(cur[k].toLowerCase()===DEF[k].toLowerCase()) continue; var c=cur[k]; t=tones(c);
       if(k==='navy'){L.push(':root{--navy:'+c+'}');}
+      else if(k==='heading'){LT.push(':root{--heading:'+c+'}');}
+      else if(/Text$/.test(k)){continue;}
       else if(k==='blue'){L.push(':root{--blue:'+c+';--blue-light:'+t.bg+';--blue-ink:'+t.fg+';--blue-bd:'+t.bd+'}.m-region{--m:'+c+'}');
         D.push(':root{--blue-light:'+t.dbg+';--blue-ink:'+t.dfg+';--blue-bd:'+t.dbd+'}');}
       else if(k==='air'||k==='ocean'||k==='road'||k==='rail'){L.push('.m-'+k+'{--m:'+c+';--m-bg:'+t.bg+';--m-fg:'+t.fg+';--m-bd:'+t.bd+'}');
@@ -1291,7 +1298,8 @@ body.editing .tile-action{display:none}
       else {L.push(':root{--'+k+'-fill:'+c+';--'+k+'-bg:'+t.bg+';--'+k+'-bd:'+t.bd+';--'+k+'-fg:'+t.fg+';--'+k+'-txt:'+t.fg+'}');
         D.push(':root{--'+k+'-bg:'+t.dbg+';--'+k+'-bd:'+t.dbd+';--'+k+'-fg:'+t.dfg+';--'+k+'-txt:'+t.dfg+'}');}
     }
-    style.textContent=L.join('\n')+(D.length?'\n@media screen and (prefers-color-scheme: dark){'+D.join('\n')+'}':'');
+    ['air','ocean','road','rail'].forEach(function(p){var v=cur[p+'Text'];if(v&&v.toLowerCase()!==DEF[p+'Text'].toLowerCase())LT.push('.m-'+p+' .mode-l,.m-'+p+' .mode-v,.m-'+p+'.mode .mode-l,.m-'+p+'.mode .mode-v,.tile.m-'+p+' .tile-status,.m-'+p+' .chip,.m-'+p+' .action-l,.tile.m-'+p+' .tile-open{color:'+v+'!important}');});
+    style.textContent=L.join('\n')+(LT.length?'\n@media (prefers-color-scheme: light), print{'+LT.join('\n')+'}':'')+(D.length?'\n@media screen and (prefers-color-scheme: dark){'+D.join('\n')+'}':'');
     if(window.restyleMap) window.restyleMap();
   }
   function changed(){var o={};for(var k in cur) if(cur[k].toLowerCase()!==DEF[k].toLowerCase()) o[k]=cur[k];return o;}
@@ -1306,7 +1314,7 @@ body.editing .tile-action{display:none}
   var inited=false;
   function wantsEdit(){return location.hash.slice(1).split('&').indexOf('edit')>-1;}
   window.addEventListener('hashchange',function(){if(wantsEdit()&&!inited)initEditor();});
-  if(canEdit) initEditor();
+  initEditor();
   function initEditor(){
   inited=true;
   /* ---------- editor UI ---------- */
@@ -1328,6 +1336,8 @@ body.editing .tile-action{display:none}
     if((x=el.closest('.ix-fill,.map-key i'))&&(m=x.className.match(/f-(open|mixed|tight|risk)/))) return [x,m[1]];
     if((x=el.closest('.map-label'))){m=x.innerHTML.match(/f-(open|mixed|tight|risk)/);if(m)return [x,m[1]];}
     if((x=el.closest('.reg-btn'))&&(m=x.className.match(/a-(open|mixed|tight|risk)/))) return [x,m[1]];
+    if((x=el.closest('.mode-l,.mode-v,.tile-status'))){var z=el.closest('[class*="m-"]');if(z&&(m=z.className.match(/m-(air|ocean|road|rail)/)))return [x,m[1]+'Text'];}
+    if((x=el.closest('.sec-head h2,.panel h3,.tile h3,.sp-head h2,.mp-in h3,.mp-empty h3')))return [x,'heading'];
     if((x=el.closest('.tile,.mode,.chip,.dv-track'))){var y=el.closest('[class*="m-"]');if(y&&(m=y.className.match(/m-(air|ocean|road|rail|region)/)))return [x,m[1]==='region'?'blue':m[1]];}
     if((x=el.closest('#spot'))&&(m=x.className.match(/m-(air|ocean|road|rail)/))&&el.closest('.sp-nav')) return [el.closest('.sp-nav'),m[1]];
     if((x=el.closest('.action'))) return [x,'blue'];
