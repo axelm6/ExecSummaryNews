@@ -691,7 +691,26 @@ svg.leaflet-image-layer.leaflet-interactive path {
   }
 }
 /* monochrome: every mode uses the same blue tones; colour is reserved for status */
-.m-ocean,.m-air,.m-rail,.m-road,.m-region{--m:var(--blue);--m-bg:var(--blue-light);--m-fg:var(--blue-ink);--m-bd:var(--blue-bd)}
+.m-region{--m:var(--blue);--m-bg:var(--blue-light);--m-fg:var(--blue-ink);--m-bd:var(--blue-bd)}
+/* product blue tones: air sky, ocean brand blue, road teal-blue, rail periwinkle */
+.m-air{--m:#8ACFF0;--m-bg:#EBF7FD;--m-fg:#1D79A8;--m-bd:#C3E6F7}
+.m-ocean{--m:#3E9BCB;--m-bg:#E6F1F8;--m-fg:#135E86;--m-bd:#B9D7EA}
+.m-road{--m:#5FB8C6;--m-bg:#E6F5F7;--m-fg:#1A6F7B;--m-bd:#B6DFE5}
+.m-rail{--m:#7E98DA;--m-bg:#EDF1FB;--m-fg:#3A55A0;--m-bd:#C9D4F1}
+@media screen and (prefers-color-scheme: dark){
+  .m-air{--m-bg:#12313F;--m-fg:#9ED8F4;--m-bd:#255066}
+  .m-ocean{--m-bg:#10293A;--m-fg:#8CC5EA;--m-bd:#23506B}
+  .m-road{--m-bg:#0F3135;--m-fg:#8FD3DC;--m-bd:#245459}
+  .m-rail{--m-bg:#1A2443;--m-fg:#AFC0F0;--m-bd:#34437A}
+}
+/* products and mode cards use their blue tone; traffic-light colour stays on status tags and regions */
+.mode.m-air,.mode.m-ocean,.mode.m-road,.mode.m-rail{border-top-color:var(--m)}
+.mode .mode-v,.tile .tile-status{color:var(--m-fg)}
+.mode-l{color:var(--m-fg)!important}
+.tile.m-air,.tile.m-ocean,.tile.m-road,.tile.m-rail{border-top-color:var(--m)}
+.tile-action{background:var(--m-bg)!important}
+dialog#spot.m-air,dialog#spot.m-ocean,dialog#spot.m-road,dialog#spot.m-rail,.print-item.m-air,.print-item.m-ocean,.print-item.m-road,.print-item.m-rail{border-top-color:var(--m)}
+#spot .sp-nav{background:var(--m-bg)}
 .a-open{--acc:var(--open-fill)}.a-mixed{--acc:var(--mixed-fill)}.a-tight{--acc:var(--tight-fill)}.a-risk{--acc:var(--risk-fill)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
