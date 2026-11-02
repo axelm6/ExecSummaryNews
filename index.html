@@ -1303,8 +1303,12 @@ body.editing .tile-action{display:none}
   hash.forEach(function(p){if(p.indexOf('theme=')===0) fromUrl=dec(p.slice(6));});
   load(window.THEME_DEFAULTS||null); if(fromUrl) for(var k in fromUrl) if(DEF[k]&&valid(fromUrl[k])) cur[k]=fromUrl[k];
   css();
-  if(!canEdit) return;
-
+  var inited=false;
+  function wantsEdit(){return location.hash.slice(1).split('&').indexOf('edit')>-1;}
+  window.addEventListener('hashchange',function(){if(wantsEdit()&&!inited)initEditor();});
+  if(canEdit) initEditor();
+  function initEditor(){
+  inited=true;
   /* ---------- editor UI ---------- */
   document.body.classList.add('can-edit');
   var drawer=document.getElementById('theme-drawer'), body=drawer.querySelector('.td-body'), openBtn=document.querySelector('.btn-colours'), tip=document.querySelector('.edit-tip');
@@ -1356,6 +1360,7 @@ body.editing .tile-action{display:none}
     a.href=URL.createObjectURL(blob);a.download='theme.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);
   });
   drawer.querySelector('.td-reset').addEventListener('click',function(){load(null);css();sync();toast('Colours reset to default');});
+  }
 })();
 </script>
 </body>
